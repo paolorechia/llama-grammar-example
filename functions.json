@@ -1,0 +1,30 @@
+{
+    "oneOf": [
+        {
+            "type": "object",
+            "properties": {
+                "function": {"const": "create_event"},
+                "arguments": {
+                    "type": "object",
+                    "properties": {
+                        "title": {"type": "string"},
+                        "date": {"type": "string"},
+                        "time": {"type": "string"}
+                    }
+                }
+            }
+        },
+        {
+            "type": "object",
+            "properties": {
+                "function": {"const": "image_search"},
+                "arguments": {
+                    "type": "object",
+                    "properties": {
+                        "query": {"type": "string"}
+                    }
+                }
+            }
+        }
+    ]
+}
