@@ -3,11 +3,16 @@ import requests
 
 grammar = r'''
 root ::= answer
-answer ::= "Good"
+answer ::= (weather | complaint | yesno)
+weather ::= ("Sunny." | "Cloudy." | "Rainy.")
+complaint ::= "I don't like talking about the weather."
+yesno ::= ("Yes." | "No.")
 '''
 
 prompts = [
-    "How's the weather in London?",
+    "<|im_start|You are a weather predictor. Answer with either Sunny, Cloudy or Rainy. How's the weather in London?<|im_end|><|im_start|>",
+    "<|im_start|How's the weather in Munich? Is it sunny? Answer with yes or no.<|im_end|><|im_start|>",
+    "<|im_start|How's the weather in Barcelona? Try to complain about this.<|im_end|><|im_start|>",
 ]
 
 for prompt in prompts:
