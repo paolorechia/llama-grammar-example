@@ -1,20 +1,24 @@
-"""Currently not working! Need to understand why. Created an issue:
-https://github.com/abetlen/llama-cpp-python/issues/622
-"""
-from llama_cpp import LlamaGrammar, Llama
+"""Code based on https://github.com/ggerganov/llama.cpp/pull/2532"""
+import requests
 
-
-if __name__ == "__main__":
-    llama_grammar = LlamaGrammar.from_file("./grammar_example.gbnf")
-    llm = Llama("./llama2-13b-megacode2-oasst.ggmlv3.q4_K_M.bin")
-    llm.grammar = llama_grammar
-    
-    prompt = '''<|im_start|>user
-What is the weather in London? <|im_end|>
-<|im_start|>assistant
+grammar = r'''
+root ::= answer
+answer ::= "Good"
 '''
-    
-    result = llm(prompt="")
-    text_result = result["choices"][0]["text"]
 
-    print(text_result)
+prompts = [
+    "How's the weather in London?",
+]
+
+for prompt in prompts:
+    data_json = { "prompt": prompt, "temperature": 0.1, "n_predict": 512, "stream": False, "grammar": grammar }
+
+    resp = requests.post(
+        url="http://127.0.0.1:8080/completion",
+        headers={"Content-Type": "application/json"},
+        json=data_json,
+    )
+    result = resp.json()["content"]
+
+    print(f"Prompt: {prompt}")
+    print(f"Result: {result}\n")
